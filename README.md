@@ -42,3 +42,6 @@ The solution is framework-agnostic and have no dependency on programming languag
 This is a simple tutorial to showcase how one can protect API endpoints/microservices using Envoy and OPA. 
 I'll work on the extension of the diagram mentioned above and share the integrations with Keycloak/Databases or Streaming platforms like Kafka.
 Till then cheers !!
+
+## References
+- https://github.com/rajat965ng/envoy-opa-nginx-triad
