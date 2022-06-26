@@ -1,0 +1,30 @@
+version: "3.9"
+
+services:
+  app:
+    image: nginx
+    volumes:
+      - ./app/default.conf:/etc/nginx/conf.d/default.conf
+      - ./app/index.html:/usr/share/nginx/html/index.html
+  proxy:
+    image: nginx
+    volumes:
+      - ./proxy/default.conf:/etc/nginx/conf.d/default.conf
+  ext_authz-opa-service:
+    image: openpolicyagent/opa:0.41.0-istio
+    volumes:
+      - ./opa-service/policy.rego:/etc/policy.rego
+    command:
+      - run
+      - --server
+      - --log-format=json-pretty
+      - --set=plugins.envoy_ext_authz_grpc.addr=:9002
+      - --set=decision_logs.console=true
+#      - --config-file=/etc/config.yaml
+      - /etc/policy.rego
+  envoy:
+    image: envoyproxy/envoy-dev:latest
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./envoy/v3.yaml:/etc/envoy/envoy.yaml
